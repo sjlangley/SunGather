@@ -90,8 +90,8 @@ def main():
         "model": configfile['inverter'].get('model',None),
         "smart_meter": configfile['inverter'].get('smart_meter',False),
         "use_local_time": configfile['inverter'].get('use_local_time',False),
-        "log_console": configfile['inverter'].get('log_console','WARNING'),
-        "log_file": configfile['inverter'].get('log_file','OFF'),
+        "log_console": configfile['inverter'].get('log_console','DEBUG'),
+        "log_file": configfile['inverter'].get('log_file','DEBUG'),
         "level": configfile['inverter'].get('level',1)
     }
 
@@ -130,15 +130,19 @@ def main():
     if not inverter.inverter_config['connection'] == "http": inverter.close()
     
     # Now we know the inverter is working, lets load the exports
+    logging.info("Trying to load exports.")
+    
     exports = []
     if configfile.get('exports'):
         for export in configfile.get('exports'):
             try:
                 if export.get('enabled', False):
                     export_load = importlib.import_module("exports." + export.get('name'))
-                    logging.info(f"Loading Export: exports\{export.get('name')}")
+                    logging.info(f"Loading Export: exports{export.get('name')}")
                     exports.append(getattr(export_load, "export_" + export.get('name'))())
                     retval = exports[-1].configure(export, inverter)
+                else:
+                    logging.info(f"ignored Export: exports{export.get('name')}")
             except Exception as err:
                 logging.error(f"Failed loading export: {err}" +
                             f"\n\t\t\t     Please make sure {export.get('name')}.py exists in the exports folder")

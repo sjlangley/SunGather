@@ -1,8 +1,8 @@
 FROM python:3 as builder
 
 RUN python3 -m venv /opt/virtualenv \
- && apt-get update \
- && apt-get install build-essential
+  && apt-get update \
+  && apt-get install build-essential
 
 COPY requirements.txt ./
 RUN /opt/virtualenv/bin/pip3 install --no-cache-dir -r requirements.txt
@@ -19,7 +19,8 @@ COPY SunGather/ .
 
 VOLUME /logs
 VOLUME /config
-COPY SunGather/config-example.yaml /config/config.yaml
+
+COPY SunGather/config.yaml /config/config.yaml
 
 USER sungather
 
