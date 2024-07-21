@@ -1,5 +1,8 @@
 PyYAML~=6.0
 paho-mqtt~=2.0
-requests~=2.0
+requests~=2.32.2
 SungrowClient>=0.1.0
 influxdb-client~=1.0
+pymodbus>=3.6.1 # not directly required, pinned by Snyk to avoid a vulnerability
+setuptools>=70.0.0 # not directly required, pinned by Snyk to avoid a vulnerability
+urllib3>=2.2.2 # not directly required, pinned by Snyk to avoid a vulnerability
